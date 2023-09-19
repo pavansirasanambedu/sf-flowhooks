@@ -1,7 +1,7 @@
 name: SF-FlowHook
 
-on: push
-  # workflow_dispatch:
+on: 
+  workflow_dispatch:
 
 env:
   DEPLOYMENT_NAME: SF-FlowHook
