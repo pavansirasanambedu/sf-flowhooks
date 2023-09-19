@@ -1,14 +1,14 @@
-name: SF-FlowHook
+name: SF-attach
 
 on:
   workflow_dispatch # You can add more triggers if needed
 
 env:
-  DEPLOYMENT_NAME: SF-FlowHook
+  DEPLOYMENT_NAME: SF-attach
 
 jobs:
   apigee-window-artifacts:
-    name: SF-FlowHook
+    name: SF-attach
     runs-on: ubuntu-latest
 
     permissions:
@@ -26,7 +26,7 @@ jobs:
           workload_identity_provider: '${{ secrets.WORKFLOW_IDENTITY_FEDERATION_NAME }}'
           service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
 
-      - name: SF-FlowHook
+      - name: SF-attach
         shell: pwsh
         run: |
           $env:TOKEN = "${{ steps.auth.outputs.access_token }}"
