@@ -17,6 +17,15 @@ jobs:
       id-token: 'write'
 
     steps:
+      # Configure Workload Identity Federation and generate an access token.
+      - id: 'auth'
+        name: 'Authenticate to Google Apigee Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          token_format: 'access_token'
+          workload_identity_provider: '${{ secrets.WORKFLOW_IDENTITY_FEDERATION_NAME }}'
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+          
       - name: Set Git identity
         run: |
           git config --global user.email "rajeshjanapati533@gmail.com"
@@ -31,5 +40,5 @@ jobs:
       - name: SF-FlowHook
         shell: pwsh
         run: |
-          
+          $env:TOKEN = "${{ steps.auth.outputs.access_token }}"          
           Invoke-Pester ./sf-flowhook.ps1 -Passthru
