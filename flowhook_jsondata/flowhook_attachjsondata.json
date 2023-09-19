@@ -1,0 +1,6 @@
+{
+  "flowHookPoint": "PreProxyFlowHook",
+  "description": "testing flowhooks from POSTMAN",
+  "sharedFlow": "SF-jwt-token",
+  "continueOnError": true
+}
