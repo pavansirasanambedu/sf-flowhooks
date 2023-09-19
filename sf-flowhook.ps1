@@ -1,10 +1,7 @@
 $token = $env:TOKEN
 
-# Define your Apigee API key
-$apiKey = $token
-
 # Define the path to the JSON file
-$jsonFilePath = "jsonpayload/body_flowhook.json"
+$jsonFilePath = "flowhook_jsondata/flowhook_attachjsondata.json"
 
 # Read the JSON data from the file
 $jsonData = Get-Content -Path $jsonFilePath | ConvertFrom-Json
@@ -22,7 +19,7 @@ $jsonBody = $jsonData | ConvertTo-Json
 # Set up the headers (replace with your actual headers)
 $headers = @{
     "Content-Type" = "application/json"
-    "Authorization" = "Bearer YourAccessToken"
+    "Authorization" = "Bearer $token"
 }
 
 # Make the API request with the JSON data as the body
