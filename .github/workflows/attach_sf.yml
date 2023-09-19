@@ -1,7 +1,7 @@
 name: SF-FlowHook
 
-on:
-  workflow_dispatch # You can add more triggers if needed
+on: push
+  # workflow_dispatch # You can add more triggers if needed
 
 env:
   DEPLOYMENT_NAME: SF-FlowHook
