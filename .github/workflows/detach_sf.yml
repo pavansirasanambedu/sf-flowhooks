@@ -5,7 +5,6 @@ on:
 
 env:
   DEPLOYMENT_NAME: SF-FlowHook
-  # key: ${{ secrets.key }}
 
 jobs:
   apigee-window-artifacts:
@@ -41,4 +40,4 @@ jobs:
         shell: pwsh
         run: |
           $env:TOKEN = "${{ steps.auth.outputs.access_token }}"          
-          Invoke-Pester ./sf-flowhook.ps1 -Passthru
+          Invoke-Pester ./sf-detach.ps1 -Passthru
