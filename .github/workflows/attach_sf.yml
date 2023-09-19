@@ -30,7 +30,7 @@ jobs:
         shell: pwsh
         run: |
           # $env:TOKEN = "${{ steps.auth.outputs.access_token }}"
-          Invoke-Pester -Path ./sf-flowhook.ps1 -Passthru
+          Invoke-Pester ./sf-flowhook.ps1 -Passthru
 
       # - name: Remove GCP Credentials JSON File
       #   run: rm gha-creds*.json
