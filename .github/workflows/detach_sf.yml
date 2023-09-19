@@ -1,14 +1,22 @@
-name: SF-FlowHook
+name: SF-detach
 
 on: 
   workflow_dispatch:
 
 env:
-  DEPLOYMENT_NAME: SF-FlowHook
+  DEPLOYMENT_NAME: SF-detach
+  FlowHookName: "PreProxyFlowHook"
+
+#   [
+#     "PreProxyFlowHook",
+#     "PostProxyFlowHook",
+#     "PreTargetFlowHook",
+#     "PostTargetFlowHook"
+# ]
 
 jobs:
   apigee-window-artifacts:
-    name: SF-FlowHook
+    name: SF-detach
     runs-on: ubuntu-latest
 
     permissions:
@@ -36,8 +44,9 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: SF-FlowHook
+      - name: SF-detach
         shell: pwsh
         run: |
+          $env:flowhookname = $env:FlowHookName
           $env:TOKEN = "${{ steps.auth.outputs.access_token }}"          
           Invoke-Pester ./sf-detach.ps1 -Passthru
