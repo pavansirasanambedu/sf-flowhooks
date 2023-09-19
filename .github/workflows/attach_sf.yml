@@ -1,15 +1,14 @@
-name: SF-FlowHook
+name: SF-attach
 
-on: 
-  workflow_dispatch:
+on:
+  workflow_dispatch # You can add more triggers if needed
 
 env:
-  DEPLOYMENT_NAME: SF-FlowHook
-  # key: ${{ secrets.key }}
+  DEPLOYMENT_NAME: SF-attach
 
 jobs:
   apigee-window-artifacts:
-    name: SF-FlowHook
+    name: SF-attach
     runs-on: ubuntu-latest
 
     permissions:
@@ -17,6 +16,7 @@ jobs:
       id-token: 'write'
 
     steps:
+
       # Configure Workload Identity Federation and generate an access token.
       - id: 'auth'
         name: 'Authenticate to Google Apigee Cloud'
@@ -25,20 +25,12 @@ jobs:
           token_format: 'access_token'
           workload_identity_provider: '${{ secrets.WORKFLOW_IDENTITY_FEDERATION_NAME }}'
           service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
-          
-      - name: Set Git identity
-        run: |
-          git config --global user.email "rajeshjanapati533@gmail.com"
-          git config --global user.name "pavansirasanambedu"
 
-      - name: Check out repository code
-        uses: actions/checkout@v3
-        with:
-          persist-credentials: false
-          fetch-depth: 0
-
-      - name: SF-FlowHook
+      - name: SF-attach
         shell: pwsh
         run: |
-          $env:TOKEN = "${{ steps.auth.outputs.access_token }}"          
-          Invoke-Pester ./sf-flowhook.ps1 -Passthru
+          $env:TOKEN = "${{ steps.auth.outputs.access_token }}"
+          Invoke-Pester -Path ./sf-flowhook.ps1 -Passthru
+
+      - name: Remove GCP Credentials JSON File
+        run: rm gha-creds*.json
