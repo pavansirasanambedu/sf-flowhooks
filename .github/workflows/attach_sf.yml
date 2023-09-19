@@ -1,0 +1,36 @@
+name: SF-FlowHook
+
+on:
+  workflow_dispatch # You can add more triggers if needed
+
+env:
+  DEPLOYMENT_NAME: SF-FlowHook
+
+jobs:
+  apigee-window-artifacts:
+    name: SF-FlowHook
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+
+      # Configure Workload Identity Federation and generate an access token.
+      - id: 'auth'
+        name: 'Authenticate to Google Apigee Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          token_format: 'access_token'
+          workload_identity_provider: '${{ secrets.WORKFLOW_IDENTITY_FEDERATION_NAME }}'
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+
+      - name: SF-FlowHook
+        shell: pwsh
+        run: |
+          $env:TOKEN = "${{ steps.auth.outputs.access_token }}"
+          Invoke-Pester -Path ./sf-flowhook.ps1 -Passthru
+
+      - name: Remove GCP Credentials JSON File
+        run: rm gha-creds*.json
